@@ -19,7 +19,7 @@ The image comes with several helpful tools pre-installed:
 - `bash` which is also configured
 - `zsh` which is also configured, including [zsh-syntax-highlighting](https://github.com/zsh-users/zsh-syntax-highlighting) and [zsh-history-substring-search](https://github.com/zsh-users/zsh-history-substring-search)
 - [krypt.co](https://krypt.co) for secure SSH and GPG key management
-- [helm](https://helm.sh/) 2 and 3
+- [helm](https://helm.sh/) which defaults to version 3, with `helm2` also installed
 - [kubeval](https://github.com/instrumenta/kubeval)
 - [kubescore](https://github.com/zegl/kube-score)
 - [k14s/kbld](https://github.com/k14s/kbld)
