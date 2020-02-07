@@ -42,7 +42,7 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # Install helper tools
 RUN brew install \
     zsh zsh-completions zsh-history-substring-search zsh-syntax-highlighting \
-    kubectl kubernetes-helm helm@2 helmfile \
+    kubectl kubernetes-helm helmfile \
     instrumenta/instrumenta/kubeval kube-score/tap/kube-score k14s/tap/kbld \
     && brew cleanup
 
