@@ -39,11 +39,9 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
 USER gitpod
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# Install brew for easy Linux <> macOS parity
-RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/Linuxbrew/install/master/install.sh)"
-
 # Install helper tools
-RUN brew install \
+RUN brew update && \
+    brew install \
     zsh zsh-completions zsh-history-substring-search zsh-syntax-highlighting \
     kubectl kubernetes-helm helm@2 helmfile \
     instrumenta/instrumenta/kubeval kube-score/tap/kube-score k14s/tap/kbld \
