@@ -23,28 +23,13 @@ LABEL org.opencontainers.image.created="${BUILD_DATE}" \
       org.opencontainers.image.authors="${AUTHOR}" \
       org.opencontainers.image.licenses="${LICENSE}"
 
-USER root
-
-# Install zsh and krypt.co
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
-                --recv-keys C4A05888A1C4FA02E1566F859F2A29A569653940 \
-  && add-apt-repository "deb http://kryptco.github.io/deb kryptco main" \
-  && apt-get update \
-  && DEBIAN_FRONTEND=noninteractive apt-get install -yq \
-  kr software-properties-common dirmngr apt-transport-https \
-  build-essential curl file git \
-  && apt-get clean && rm -rf /var/cache/apt/* && rm -rf /var/lib/apt/lists/* && rm -rf /tmp/*
-
 # Install tools as user
 USER gitpod
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # Install helper tools
-RUN brew update && \
-    brew reinstall -s perl && \
-    brew install \
-    zsh zsh-completions zsh-history-substring-search zsh-syntax-highlighting \
-    kubectl kubernetes-helm helm@2 helmfile \
+RUN brew update && brew install \
+    kubectl kubernetes-helm helmfile \
     instrumenta/instrumenta/kubeval kube-score/tap/kube-score k14s/tap/kbld \
     && brew cleanup
 
@@ -53,25 +38,10 @@ RUN helm plugin install https://github.com/helm/helm-2to3 && \
     helm plugin install https://github.com/hypnoglow/helm-s3.git && \
     helm plugin install https://github.com/databus23/helm-diff
 
-# Set zsh config by appending to default one
-COPY .gitpod.zshrc .
-RUN cat .gitpod.zshrc >> "$HOME/.zshrcnew" \
-    && cat "$HOME/.zshrc" >> "$HOME/.zshrcnew" \
-    && mv "$HOME/.zshrcnew" "$HOME/.zshrc"
-
-# Set bash config by appending to default one
-COPY .gitpod.bashrc .
-RUN cat .gitpod.bashrc >> "$HOME/.bashrcnew" \
-  && cat "$HOME/.bashrc" >> "$HOME/.bashrcnew" \
-  && mv "$HOME/.bashrcnew" "$HOME/.bashrc"
-
-# Copy the helper scripts
-COPY helpers "$HOME/helpers/"
+COPY .gitpod.bashrc /home/gitpod/.bashrc.d/custom
 
 # Give back control
 USER root
-#  but after making helpers executable
-RUN chmod +x "$HOME/helpers/"*.sh
 #  and revert back to default shell
 #  otherwise adding Gitpod Layer will fail
 SHELL ["/bin/sh", "-c"]
