@@ -42,8 +42,6 @@ COPY .gitpod.bashrc /home/gitpod/.bashrc.d/custom
 
 # Give back control
 USER root
-#  but after making helpers executable
-RUN chmod +x "$HOME/helpers/"*.sh
 #  and revert back to default shell
 #  otherwise adding Gitpod Layer will fail
 SHELL ["/bin/sh", "-c"]
